@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Helper Tom</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0b0f17;
+        --panel: rgba(18, 24, 38, 0.9);
+        --panel-2: #0f1522;
+        --text: #e8eefc;
+        --muted: #9aa7bd;
+        --border: rgba(255, 255, 255, 0.08);
+        --accent: #7c9cff;
+        --accent-strong: #9bb0ff;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at top, rgba(124, 156, 255, 0.18), transparent 32%),
+          linear-gradient(180deg, #0b0f17 0%, #090d14 100%);
+        color: var(--text);
+      }
+
+      .page {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 32px;
+      }
+
+      .card {
+        width: min(100%, 1120px);
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 24px;
+        padding: 28px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .hero,
+      .chat-panel {
+        padding: 20px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+        box-shadow: 0 0 0 6px rgba(124, 156, 255, 0.12);
+      }
+
+      h1 {
+        margin: 22px 0 14px;
+        font-size: clamp(2.4rem, 5vw, 4.6rem);
+        line-height: 0.95;
+        letter-spacing: -0.05em;
+      }
+
+      .lead {
+        max-width: 42ch;
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.7;
+      }
+
+      .highlights {
+        margin: 28px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 12px;
+      }
+
+      .highlights li {
+        padding: 14px 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        color: #dbe4f7;
+      }
+
+      .chat-panel {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 16px;
+        min-height: 680px;
+        background: linear-gradient(180deg, rgba(15, 21, 34, 0.98), rgba(11, 15, 23, 0.98));
+        border: 1px solid var(--border);
+        border-radius: 24px;
+      }
+
+      .chat-header h2 {
+        margin: 0 0 8px;
+        font-size: 1.5rem;
+      }
+
+      .chat-header p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .chat-log {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 18px;
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.02);
+        overflow-y: auto;
+        min-height: 360px;
+      }
+
+      .message-row {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        max-width: min(80%, 560px);
+      }
+
+      .message-row.user {
+        align-self: flex-end;
+        align-items: flex-end;
+      }
+
+      .message-row.assistant {
+        align-self: flex-start;
+        align-items: flex-start;
+      }
+
+      .message-label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.8;
+      }
+
+      .message-row.user .message-label {
+        color: #8fb0ff;
+      }
+
+      .message-row.assistant .message-label {
+        color: var(--accent-strong);
+      }
+
+      .message {
+        padding: 14px 16px;
+        border-radius: 18px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .message.user {
+        background: linear-gradient(135deg, #2f6bff, #5e86ff);
+        color: #fff;
+        border-bottom-right-radius: 6px;
+      }
+
+      .message.assistant {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
+        color: #dbe4f7;
+        border-bottom-left-radius: 6px;
+      }
+
+      .chat-form {
+        display: grid;
+        gap: 14px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+        font-size: 0.95rem;
+        color: #d8e0ef;
+      }
+
+      textarea {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text);
+        padding: 14px 16px;
+        font: inherit;
+        outline: none;
+        transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+      }
+
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      textarea:focus {
+        border-color: rgba(124, 156, 255, 0.8);
+        background: rgba(124, 156, 255, 0.06);
+      }
+
+      button {
+        border: 0;
+        border-radius: 16px;
+        padding: 14px 18px;
+        font: inherit;
+        font-weight: 600;
+        color: #ffffff;
+        background: #2f6bff;
+        cursor: pointer;
+        transition: transform 0.2s ease, filter 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.08);
+      }
+
+      button:disabled {
+        cursor: wait;
+        filter: saturate(0.8);
+        opacity: 0.8;
+      }
+
+      .status {
+        min-height: 1.4em;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 920px) {
+        .card {
+          grid-template-columns: 1fr;
+        }
+
+        .chat-panel {
+          min-height: 620px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="card" aria-label="Begrüßungsseite des Assistenten">
+        <div class="hero">
+          <div class="eyebrow">Solar- und Energieassistent</div>
+          <h1>Helper Tom</h1>
+          <p class="lead">
+            Ich unterstütze dich bei Energiefragen, Solarprojekten und PV-Anlagen — kurz,
+            klar und praxisnah. Auf Wunsch erkläre ich auch ausführlicher.
+          </p>
+          <ul class="highlights">
+            <li>PV, Solar und Energiethemen verständlich erklärt</li>
+            <li>Kurze Antworten mit der Option auf mehr Details</li>
+            <li>Moderner Dark Mode mit ruhigem Fokus</li>
+          </ul>
+        </div>
+
+        <aside class="chat-panel" aria-label="Chat">
+          <div class="chat-header">
+            <h2>Chat mit dem Assistenten</h2>
+            <p>Schreibe eine Frage zu Energie oder Solar — die Antwort erscheint direkt im Verlauf.</p>
+          </div>
+
+          <div id="chat-log" class="chat-log" aria-live="polite" aria-label="Nachrichtenverlauf">
+            <div class="message assistant">Hallo! Stell mir deine Frage zu Energie, Solar oder PV.</div>
+          </div>
+
+          <form id="prompt-form" class="chat-form">
+            <label>
+              Nachricht
+              <textarea
+                id="message"
+                name="message"
+                placeholder="Beschreibe dein Energie- oder Solarproblem"
+              ></textarea>
+            </label>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <button id="send-button" type="submit">Senden</button>
+              <button id="clear-history-button" type="button">Verlauf löschen</button>
+            </div>
+            <div id="status" class="status" role="status" aria-live="polite"></div>
+          </form>
+        </aside>
+      </section>
+    </main>
+    <script>
+      const form = document.getElementById('prompt-form');
+      const messageInput = document.getElementById('message');
+      const chatLog = document.getElementById('chat-log');
+      const statusEl = document.getElementById('status');
+      const sendButton = document.getElementById('send-button');
+      const clearHistoryButton = document.getElementById('clear-history-button');
+      const systemPrompt =
+        'You are a specialized assistant for energy, solar power, and PV systems. Answer only questions about energy, solar, PV systems, and directly related topics. Keep responses short, clear, and concrete. If the user asks for more explanation, respond in more detail, structured and thorough. If the question is not related to energy, solar, or PV systems, politely refuse.';
+      const historyKey = 'helper-tom-chat-history';
+      const messageHistory = [];
+      const API_ENDPOINT = '/api/chat';
+
+      function renderMessage(role, text) {
+        const row = document.createElement('div');
+        row.className = `message-row ${role}`;
+
+        const label = document.createElement('span');
+        label.className = 'message-label';
+        label.textContent = role === 'user' ? 'Du' : 'Assistent';
+
+        const bubble = document.createElement('div');
+        bubble.className = `message ${role}`;
+        bubble.textContent = text;
+
+        row.append(label, bubble);
+        return row;
+      }
+
+      function renderChat() {
+        chatLog.innerHTML = '';
+
+        if (messageHistory.length === 0) {
+          chatLog.appendChild(renderMessage('assistant', 'Hallo! Stell mir deine Frage zu Energie, Solar oder PV.'));
+          return;
+        }
+
+        for (const entry of messageHistory) {
+          chatLog.appendChild(renderMessage(entry.role, entry.text));
+        }
+
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }
+
+      function saveHistory() {
+        localStorage.setItem(historyKey, JSON.stringify(messageHistory));
+      }
+
+      function clearHistory() {
+        messageHistory.length = 0;
+        localStorage.removeItem(historyKey);
+        renderChat();
+        statusEl.textContent = 'Verlauf gelöscht.';
+      }
+
+      function addMessage(role, text) {
+        messageHistory.push({ role, text });
+        saveHistory();
+        renderChat();
+      }
+
+      function buildConversationInput() {
+        return messageHistory.map((entry) => ({
+          role: entry.role,
+          content: entry.text,
+        }));
+      }
+
+      function createMessageBubble(role, text = '') {
+        const row = document.createElement('div');
+        row.className = `message-row ${role}`;
+
+        const label = document.createElement('span');
+        label.className = 'message-label';
+        label.textContent = role === 'user' ? 'Du' : 'Assistent';
+
+        const bubble = document.createElement('div');
+        bubble.className = `message ${role}`;
+        bubble.textContent = text;
+
+        row.append(label, bubble);
+        chatLog.appendChild(row);
+        chatLog.scrollTop = chatLog.scrollHeight;
+        return bubble;
+      }
+
+      function loadHistory() {
+        try {
+          const saved = localStorage.getItem(historyKey);
+          if (!saved) {
+            renderChat();
+            return;
+          }
+
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            messageHistory.push(
+              ...parsed.filter(
+                (entry) =>
+                  entry &&
+                  (entry.role === 'user' || entry.role === 'assistant') &&
+                  typeof entry.text === 'string',
+              ),
+            );
+          }
+        } catch {
+          localStorage.removeItem(historyKey);
+        }
+
+        renderChat();
+      }
+
+      loadHistory();
+      clearHistoryButton.addEventListener('click', clearHistory);
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const question = messageInput.value.trim();
+        if (!question) {
+          statusEl.textContent = 'Bitte gib eine Nachricht ein.';
+          return;
+        }
+
+        addMessage('user', question);
+        messageInput.value = '';
+        statusEl.textContent = 'Antworte im Stream...';
+        sendButton.disabled = true;
+
+        const assistantBubble = createMessageBubble('assistant', '');
+        let streamedAnswer = '';
+
+        try {
+          // Build messages array with system prompt
+          const messages = [
+            { role: 'system', content: systemPrompt },
+            ...buildConversationInput(),
+          ];
+
+          const response = await fetch(API_ENDPOINT, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              messages: messages,
+            }),
+          });
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Request failed');
+          }
+
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+          let buffer = '';
+
+          const applyAnswer = (text) => {
+            assistantBubble.textContent = text || '...';
+            chatLog.scrollTop = chatLog.scrollHeight;
+          };
+
+          while (true) {
+            const { value, done } = await reader.read();
+            if (done) {
+              break;
+            }
+
+            buffer += decoder.decode(value, { stream: true });
+
+            // Parse SSE format
+            const lines = buffer.split('\n');
+            buffer = lines[lines.length - 1];
+
+            for (let i = 0; i < lines.length - 1; i++) {
+              const line = lines[i].trim();
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6);
+                if (data && data !== '[DONE]') {
+                  try {
+                    const event = JSON.parse(data);
+                    const delta = event.choices?.[0]?.delta?.content;
+                    if (delta) {
+                      streamedAnswer += delta;
+                      applyAnswer(streamedAnswer);
+                    }
+                  } catch {
+                    // Ignore non-JSON SSE payloads
+                  }
+                }
+              }
+            }
+          }
+
+          assistantBubble.textContent = streamedAnswer || 'Keine Antwort erhalten.';
+          messageHistory.push({ role: 'assistant', text: assistantBubble.textContent });
+          saveHistory();
+          statusEl.textContent = 'Fertig.';
+        } catch (error) {
+          assistantBubble.textContent = error instanceof Error ? error.message : 'Unbekannter Fehler';
+          messageHistory.push({ role: 'assistant', text: assistantBubble.textContent });
+          saveHistory();
+          statusEl.textContent = 'Anfrage konnte nicht gesendet werden.';
+        } finally {
+          sendButton.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
