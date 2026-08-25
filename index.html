@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Helper Tom</title>
+
+  <title>Diabetologie-Assistent</title>
 
   <style>
     :root {
       color-scheme: dark;
+
       --bg: #0b0f17;
       --panel: rgba(18, 24, 38, 0.9);
-      --panel-2: #0f1522;
       --text: #e8eefc;
       --muted: #9aa7bd;
       --border: rgba(255, 255, 255, 0.08);
@@ -26,6 +27,7 @@
     body {
       margin: 0;
       min-height: 100vh;
+
       font-family:
         Inter,
         system-ui,
@@ -51,8 +53,10 @@
 
     .page {
       min-height: 100vh;
+
       display: grid;
       place-items: center;
+
       padding: 32px;
     }
 
@@ -66,10 +70,12 @@
       padding: 28px;
 
       background: var(--panel);
+
       border: 1px solid var(--border);
       border-radius: 28px;
 
       box-shadow: var(--shadow);
+
       backdrop-filter: blur(18px);
     }
 
@@ -81,6 +87,7 @@
     .eyebrow {
       display: inline-flex;
       align-items: center;
+
       gap: 10px;
 
       padding: 8px 14px;
@@ -89,6 +96,7 @@
       border: 1px solid var(--border);
 
       color: var(--muted);
+
       font-size: 0.9rem;
     }
 
@@ -118,26 +126,31 @@
         clamp(2.4rem, 5vw, 4.6rem);
 
       line-height: 0.95;
+
       letter-spacing: -0.05em;
     }
 
     .lead {
       max-width: 42ch;
+
       margin: 0;
 
       color: var(--muted);
 
       font-size: 1.05rem;
+
       line-height: 1.7;
     }
 
     .highlights {
       margin: 28px 0 0;
+
       padding: 0;
 
       list-style: none;
 
       display: grid;
+
       gap: 12px;
     }
 
@@ -180,6 +193,7 @@
 
     .chat-header h2 {
       margin: 0 0 8px;
+
       font-size: 1.5rem;
     }
 
@@ -187,12 +201,15 @@
       margin: 0;
 
       color: var(--muted);
+
       line-height: 1.6;
     }
 
     .chat-log {
       display: flex;
+
       flex-direction: column;
+
       gap: 14px;
 
       padding: 18px;
@@ -206,12 +223,15 @@
         rgba(255, 255, 255, 0.02);
 
       overflow-y: auto;
+
       min-height: 360px;
     }
 
     .message-row {
       display: flex;
+
       flex-direction: column;
+
       gap: 6px;
 
       max-width:
@@ -220,19 +240,23 @@
 
     .message-row.user {
       align-self: flex-end;
+
       align-items: flex-end;
     }
 
     .message-row.assistant {
       align-self: flex-start;
+
       align-items: flex-start;
     }
 
     .message-label {
       font-size: 0.78rem;
+
       font-weight: 700;
 
       letter-spacing: 0.08em;
+
       text-transform: uppercase;
 
       opacity: 0.8;
@@ -254,6 +278,7 @@
       line-height: 1.6;
 
       white-space: pre-wrap;
+
       word-break: break-word;
     }
 
@@ -265,7 +290,7 @@
           #5e86ff
         );
 
-      color: #fff;
+      color: #ffffff;
 
       border-bottom-right-radius: 6px;
     }
@@ -284,11 +309,13 @@
 
     .chat-form {
       display: grid;
+
       gap: 14px;
     }
 
     label {
       display: grid;
+
       gap: 8px;
 
       font-size: 0.95rem;
@@ -298,6 +325,10 @@
 
     textarea {
       width: 100%;
+
+      min-height: 120px;
+
+      resize: vertical;
 
       border:
         1px solid var(--border);
@@ -317,11 +348,7 @@
 
       transition:
         border-color 0.2s ease,
-        transform 0.2s ease,
         background 0.2s ease;
-
-      min-height: 120px;
-      resize: vertical;
     }
 
     textarea:focus {
@@ -334,14 +361,17 @@
 
     button {
       border: 0;
+
       border-radius: 16px;
 
       padding: 14px 18px;
 
       font: inherit;
+
       font-weight: 600;
 
       color: #ffffff;
+
       background: #2f6bff;
 
       cursor: pointer;
@@ -362,9 +392,6 @@
     button:disabled {
       cursor: wait;
 
-      filter:
-        saturate(0.8);
-
       opacity: 0.8;
     }
 
@@ -374,6 +401,7 @@
       color: var(--muted);
 
       font-size: 0.9rem;
+
       line-height: 1.5;
     }
 
@@ -395,41 +423,37 @@
 
   <section
     class="card"
-    aria-label="Begrüßungsseite des Assistenten"
+    aria-label="Diabetologie-Assistent"
   >
 
     <div class="hero">
 
       <div class="eyebrow">
-        Solar- und Energieassistent
+        Diabetologie-Assistent
       </div>
 
       <h1>
-        Helper Tom
+        Diabetes Helfer
       </h1>
 
       <p class="lead">
-        Ich unterstütze dich bei Energiefragen,
-        Solarprojekten und PV-Anlagen — kurz,
-        klar und praxisnah.
-        Auf Wunsch erkläre ich auch ausführlicher.
+        Ich unterstütze dich bei Fragen rund um
+        Diabetes und Diabetologie —
+        klar, verständlich und strukturiert.
       </p>
 
       <ul class="highlights">
 
         <li>
-          PV, Solar und Energiethemen
-          verständlich erklärt
+          Diabetes Typ 1 und Typ 2 verständlich erklärt
         </li>
 
         <li>
-          Kurze Antworten mit der Option
-          auf mehr Details
+          Blutzucker, HbA1c, Insulin und CGM
         </li>
 
         <li>
-          Moderner Dark Mode
-          mit ruhigem Fokus
+          Ernährung, Bewegung und Diabetes-Medikamente
         </li>
 
       </ul>
@@ -445,12 +469,12 @@
       <div class="chat-header">
 
         <h2>
-          Chat mit dem Assistenten
+          Chat mit dem Diabetologie-Assistenten
         </h2>
 
         <p>
-          Schreibe eine Frage zu Energie oder Solar —
-          die Antwort erscheint direkt im Verlauf.
+          Stelle eine Frage zu Diabetes oder Diabetologie.
+          Die Antwort erscheint direkt während der Erstellung.
         </p>
 
       </div>
@@ -461,8 +485,7 @@
         class="chat-log"
         aria-live="polite"
         aria-label="Nachrichtenverlauf"
-      >
-      </div>
+      ></div>
 
 
       <form
@@ -477,7 +500,7 @@
           <textarea
             id="message"
             name="message"
-            placeholder="Beschreibe dein Energie- oder Solarproblem"
+            placeholder="Zum Beispiel: Was bedeutet ein HbA1c-Wert von 7 %?"
           ></textarea>
 
         </label>
@@ -527,7 +550,7 @@
 <script>
 
   /*
-   * DOM Elemente
+   * DOM
    */
 
   const form =
@@ -552,43 +575,67 @@
 
 
   /*
-   * Einstellungen
+   * API
    */
 
   const API_ENDPOINT =
     '/api/chat';
 
 
-  const systemPrompt =
-    `You are a specialized assistant for energy,
-solar power, and PV systems.
+  /*
+   * System Prompt
+   */
 
-Answer only questions about energy,
-solar, PV systems,
-and directly related topics.
+  const systemPrompt = `
+You are a specialized assistant for diabetology.
 
-Keep responses short,
-clear and concrete.
+Answer only questions related to diabetes and diabetology, including:
 
-If the user asks for more explanation,
-respond in more detail,
-structured and thorough.
+- type 1 diabetes
+- type 2 diabetes
+- gestational diabetes
+- blood glucose
+- HbA1c
+- insulin
+- glucose monitoring
+- CGM
+- diabetes medications
+- nutrition in the context of diabetes
+- exercise in the context of diabetes
+- hypoglycemia
+- hyperglycemia
+- diabetes complications
 
-If the question is not related
-to energy, solar,
-or PV systems,
-politely refuse.`;
+If the user asks about a topic that is not related to diabetes or diabetology,
+politely explain that you only answer questions about diabetology.
 
+Answer in the language used by the user.
+
+Give clear, factual and understandable information.
+
+Distinguish between general medical information and an individual medical assessment.
+
+Do not present information as a personal medical diagnosis.
+
+Do not tell the user to start, stop, or change prescribed medication or insulin dosage without consulting a qualified healthcare professional.
+
+If symptoms may indicate an acute medical emergency,
+clearly advise the user to seek urgent medical care.
+`;
+
+
+  /*
+   * Chat Verlauf
+   */
 
   const historyKey =
-    'helper-tom-chat-history';
-
+    'diabetologie-assistent-chat-history';
 
   const messageHistory = [];
 
 
   /*
-   * Nachricht erzeugen
+   * Nachricht rendern
    */
 
   function renderMessage(
@@ -636,7 +683,7 @@ politely refuse.`;
 
 
   /*
-   * Chat neu rendern
+   * Chat anzeigen
    */
 
   function renderChat() {
@@ -652,7 +699,7 @@ politely refuse.`;
 
         renderMessage(
           'assistant',
-          'Hallo! Stell mir deine Frage zu Energie, Solar oder PV.'
+          'Hallo! Stell mir deine Frage zu Diabetes oder Diabetologie.'
         )
 
       );
@@ -673,6 +720,7 @@ politely refuse.`;
         )
 
       );
+
     }
 
 
@@ -736,27 +784,22 @@ politely refuse.`;
 
 
   /*
-   * Verlauf für API vorbereiten
+   * Nachrichten für API vorbereiten
    */
 
   function buildConversationInput() {
 
     return messageHistory.map(
       (entry) => ({
-
-        role:
-          entry.role,
-
-        content:
-          entry.text
-
+        role: entry.role,
+        content: entry.text
       })
     );
   }
 
 
   /*
-   * Leere Bubble für Streaming
+   * Bubble für Streaming erstellen
    */
 
   function createMessageBubble(
@@ -813,7 +856,7 @@ politely refuse.`;
 
 
   /*
-   * Verlauf laden
+   * Gespeicherten Verlauf laden
    */
 
   function loadHistory() {
@@ -887,7 +930,7 @@ politely refuse.`;
 
 
   /*
-   * Chat senden
+   * Nachricht senden
    */
 
   form.addEventListener(
@@ -911,7 +954,7 @@ politely refuse.`;
 
 
       /*
-       * Benutzerfrage anzeigen
+       * Benutzerfrage speichern
        */
 
       addMessage(
@@ -922,17 +965,15 @@ politely refuse.`;
 
       messageInput.value = '';
 
-
       statusEl.textContent =
         'Antwort wird erstellt...';
 
-
-      sendButton.disabled = true;
+      sendButton.disabled =
+        true;
 
 
       /*
-       * Leere Assistant Bubble
-       * für Streaming
+       * Leere Assistant-Bubble
        */
 
       const assistantBubble =
@@ -948,7 +989,7 @@ politely refuse.`;
       try {
 
         /*
-         * Nachrichten für Backend
+         * Nachrichten vorbereiten
          */
 
         const messages = [
@@ -964,7 +1005,7 @@ politely refuse.`;
 
 
         /*
-         * Anfrage an Vercel Backend
+         * Backend aufrufen
          */
 
         const response =
@@ -975,10 +1016,8 @@ politely refuse.`;
               method: 'POST',
 
               headers: {
-
                 'Content-Type':
                   'application/json'
-
               },
 
               body:
@@ -991,7 +1030,7 @@ politely refuse.`;
 
 
         /*
-         * HTTP Fehler
+         * HTTP Fehler prüfen
          */
 
         if (!response.ok) {
@@ -1008,7 +1047,7 @@ politely refuse.`;
 
 
         /*
-         * Prüfen ob Streaming vorhanden
+         * Streaming prüfen
          */
 
         if (!response.body) {
@@ -1020,22 +1059,20 @@ politely refuse.`;
 
 
         /*
-         * Stream Reader
+         * Stream lesen
          */
 
         const reader =
           response.body.getReader();
 
-
         const decoder =
           new TextDecoder();
-
 
         let buffer = '';
 
 
         /*
-         * Eine SSE-Zeile bearbeiten
+         * SSE Zeile verarbeiten
          */
 
         function handleLine(line) {
@@ -1043,12 +1080,6 @@ politely refuse.`;
           line =
             line.trim();
 
-
-          /*
-           * OpenAI SSE:
-           *
-           * data: {...}
-           */
 
           if (
             !line.startsWith(
@@ -1084,8 +1115,8 @@ politely refuse.`;
 
 
             /*
-             * Responses API
-             * Text Streaming
+             * OpenAI Responses API:
+             * normaler Text
              */
 
             if (
@@ -1114,8 +1145,7 @@ politely refuse.`;
 
 
             /*
-             * Falls OpenAI
-             * eine Refusal-Antwort streamt
+             * Refusal-Text
              */
 
             if (
@@ -1149,6 +1179,7 @@ politely refuse.`;
               'Streaming Event konnte nicht gelesen werden:',
               parseError
             );
+
           }
         }
 
@@ -1180,28 +1211,13 @@ politely refuse.`;
             );
 
 
-          /*
-           * SSE Events
-           * sind zeilenbasiert
-           */
-
           const lines =
             buffer.split('\n');
 
 
-          /*
-           * Letzte möglicherweise
-           * unvollständige Zeile
-           * behalten
-           */
-
           buffer =
             lines.pop() || '';
 
-
-          /*
-           * Fertige Zeilen bearbeiten
-           */
 
           for (
             const line of lines
@@ -1210,6 +1226,7 @@ politely refuse.`;
             handleLine(
               line
             );
+
           }
         }
 
@@ -1222,10 +1239,6 @@ politely refuse.`;
           decoder.decode();
 
 
-        /*
-         * Restlichen Buffer prüfen
-         */
-
         if (
           buffer.trim()
         ) {
@@ -1233,11 +1246,12 @@ politely refuse.`;
           handleLine(
             buffer
           );
+
         }
 
 
         /*
-         * Antwort fertig
+         * Antwort speichern
          */
 
         const answer =
@@ -1248,11 +1262,6 @@ politely refuse.`;
         assistantBubble.textContent =
           answer;
 
-
-        /*
-         * Assistant Antwort
-         * erst jetzt speichern
-         */
 
         messageHistory.push({
 
@@ -1284,11 +1293,12 @@ politely refuse.`;
 
 
         /*
-         * Falls schon Text gestreamt wurde,
-         * nicht einfach löschen.
+         * Bereits gestreamten Text behalten
          */
 
-        if (streamedAnswer) {
+        if (
+          streamedAnswer
+        ) {
 
           assistantBubble.textContent =
             streamedAnswer;
@@ -1303,6 +1313,7 @@ politely refuse.`;
                 ? error.message
                 : 'Unbekannter Fehler'
             );
+
         }
 
 
