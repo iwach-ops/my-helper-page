@@ -14,12 +14,10 @@ export default async function handler(req, res) {
             });
         }
 
-        // System-Prompt aus dem Frontend herausnehmen
         const systemMessage = messages.find(
             message => message.role === "system"
         );
 
-        // Nur normale Unterhaltung an OpenAI senden
         const conversation = messages
             .filter(
                 message =>
@@ -31,7 +29,7 @@ export default async function handler(req, res) {
                 content: message.content
             }));
 
-        const response = await fetch(
+        const openaiResponse = await fetch(
             "https://api.openai.com/v1/responses",
             {
                 method: "POST",
@@ -44,42 +42,63 @@ export default async function handler(req, res) {
 
                 body: JSON.stringify({
                     model: "gpt-5.6-luna",
+
                     instructions:
                         systemMessage?.content ||
                         "You are a helpful assistant.",
-                    input: conversation
+
+                    input: conversation,
+
+                    stream: true
                 })
             }
         );
 
-        const data = await response.json();
+        if (!openaiResponse.ok) {
+            const errorText = await openaiResponse.text();
 
-        if (!response.ok) {
-            console.error("OpenAI error:", data);
+            console.error(errorText);
 
-            return res.status(response.status).json({
-                error:
-                    data.error?.message ||
-                    "OpenAI API error"
+            return res.status(openaiResponse.status).json({
+                error: errorText
             });
         }
 
-        const text = (data.output || [])
-            .filter(item => item.type === "message")
-            .flatMap(item => item.content || [])
-            .filter(item => item.type === "output_text")
-            .map(item => item.text)
-            .join("");
+        res.statusCode = 200;
 
-        return res.status(200).json({
-            text: text || "Keine Antwort erhalten."
-        });
+        res.setHeader(
+            "Content-Type",
+            "text/event-stream; charset=utf-8"
+        );
+
+        res.setHeader(
+            "Cache-Control",
+            "no-cache, no-transform"
+        );
+
+        const reader = openaiResponse.body.getReader();
+
+        while (true) {
+            const { value, done } = await reader.read();
+
+            if (done) {
+                break;
+            }
+
+            res.write(Buffer.from(value));
+        }
+
+        res.end();
 
     } catch (error) {
         console.error(error);
 
-        return res.status(500).json({
-            error: "Server error"
-        });
+        if (!res.headersSent) {
+            return res.status(500).json({
+                error: "Server error"
+            });
+        }
+
+        res.end();
     }
 }
