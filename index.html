@@ -431,98 +431,87 @@
       clearHistoryButton.addEventListener('click', clearHistory);
 
       form.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    event.preventDefault();
 
-        const question = messageInput.value.trim();
-        if (!question) {
-          statusEl.textContent = 'Bitte gib eine Nachricht ein.';
-          return;
-        }
+    const question = messageInput.value.trim();
 
-        addMessage('user', question);
-        messageInput.value = '';
-        statusEl.textContent = 'Antworte im Stream...';
-        sendButton.disabled = true;
+    if (!question) {
+        statusEl.textContent = 'Bitte gib eine Nachricht ein.';
+        return;
+    }
 
-        const assistantBubble = createMessageBubble('assistant', '');
-        let streamedAnswer = '';
+    addMessage('user', question);
 
-        try {
-          // Build messages array with system prompt
-          const messages = [
-            { role: 'system', content: systemPrompt },
-            ...buildConversationInput(),
-          ];
+    messageInput.value = '';
+    statusEl.textContent = 'Antwort wird erstellt...';
+    sendButton.disabled = true;
 
-          const response = await fetch(API_ENDPOINT, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
+    const assistantBubble =
+        createMessageBubble('assistant', '...');
+
+    try {
+        const messages = [
+            {
+                role: 'system',
+                content: systemPrompt
             },
+            ...buildConversationInput()
+        ];
+
+        const response = await fetch(API_ENDPOINT, {
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
             body: JSON.stringify({
-              messages: messages,
-            }),
-          });
+                messages: messages
+            })
+        });
 
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText || 'Request failed');
-          }
+        const data = await response.json();
 
-          const reader = response.body.getReader();
-          const decoder = new TextDecoder();
-          let buffer = '';
-
-          const applyAnswer = (text) => {
-            assistantBubble.textContent = text || '...';
-            chatLog.scrollTop = chatLog.scrollHeight;
-          };
-
-          while (true) {
-            const { value, done } = await reader.read();
-            if (done) {
-              break;
-            }
-
-            buffer += decoder.decode(value, { stream: true });
-
-            // Parse SSE format
-            const lines = buffer.split('\n');
-            buffer = lines[lines.length - 1];
-
-            for (let i = 0; i < lines.length - 1; i++) {
-              const line = lines[i].trim();
-              if (line.startsWith('data: ')) {
-                const data = line.slice(6);
-                if (data && data !== '[DONE]') {
-                  try {
-                    const event = JSON.parse(data);
-                    const delta = event.choices?.[0]?.delta?.content;
-                    if (delta) {
-                      streamedAnswer += delta;
-                      applyAnswer(streamedAnswer);
-                    }
-                  } catch {
-                    // Ignore non-JSON SSE payloads
-                  }
-                }
-              }
-            }
-          }
-
-          assistantBubble.textContent = streamedAnswer || 'Keine Antwort erhalten.';
-          messageHistory.push({ role: 'assistant', text: assistantBubble.textContent });
-          saveHistory();
-          statusEl.textContent = 'Fertig.';
-        } catch (error) {
-          assistantBubble.textContent = error instanceof Error ? error.message : 'Unbekannter Fehler';
-          messageHistory.push({ role: 'assistant', text: assistantBubble.textContent });
-          saveHistory();
-          statusEl.textContent = 'Anfrage konnte nicht gesendet werden.';
-        } finally {
-          sendButton.disabled = false;
+        if (!response.ok) {
+            throw new Error(
+                data.error || 'Request failed'
+            );
         }
-      });
+
+        const answer =
+            data.text || 'Keine Antwort erhalten.';
+
+        assistantBubble.textContent = answer;
+
+        messageHistory.push({
+            role: 'assistant',
+            text: answer
+        });
+
+        saveHistory();
+
+        chatLog.scrollTop =
+            chatLog.scrollHeight;
+
+        statusEl.textContent = 'Fertig.';
+
+    } catch (error) {
+
+        console.error(error);
+
+        assistantBubble.textContent =
+            'Fehler: ' +
+            (error instanceof Error
+                ? error.message
+                : 'Unbekannter Fehler');
+
+        statusEl.textContent =
+            'Anfrage konnte nicht gesendet werden.';
+
+    } finally {
+        sendButton.disabled = false;
+    }
+});
     </script>
   </body>
 </html>
